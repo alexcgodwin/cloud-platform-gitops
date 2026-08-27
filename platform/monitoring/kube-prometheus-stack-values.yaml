@@ -1,0 +1,3 @@
+grafana: {enabled: true}
+prometheus: {prometheusSpec: {retention: 7d}}
+alertmanager: {enabled: true}

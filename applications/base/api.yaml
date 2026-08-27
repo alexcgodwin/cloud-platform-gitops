@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: api, namespace: platform}
+spec:
+  replicas: 2
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
+  selector: {matchLabels: {app: api}}
+  template:
+    metadata: {labels: {app: api}}
+    spec:
+      securityContext: {runAsNonRoot: true, seccompProfile: {type: RuntimeDefault}}
+      containers:
+      - name: api
+        image: platform-api:1
+        ports: [{containerPort: 8000}]
+        envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
+        startupProbe: {httpGet: {path: /health, port: 8000}, failureThreshold: 30, periodSeconds: 2}
+        readinessProbe: {httpGet: {path: /ready, port: 8000}, periodSeconds: 5}
+        livenessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 10}
+        securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: ["ALL"]}}
+        resources: {requests: {cpu: 100m, memory: 96Mi}, limits: {cpu: 500m, memory: 384Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: api, namespace: platform}
+spec: {selector: {app: api}, ports: [{port: 8000, targetPort: 8000}]}
