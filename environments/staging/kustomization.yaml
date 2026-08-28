@@ -5,10 +5,10 @@ resources:
   - namespace.yaml
   - ../../applications/base
 images:
-- {name: platform-frontend, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-frontend, newTag: "build-12"}
-- {name: platform-api, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-api, newTag: "build-12"}
-- {name: platform-auth, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-auth, newTag: "build-12"}
-- {name: platform-worker, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-worker, newTag: "build-12"}
+- {name: platform-frontend, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-frontend, newTag: "build-13"}
+- {name: platform-api, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-api, newTag: "build-13"}
+- {name: platform-auth, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-auth, newTag: "build-13"}
+- {name: platform-worker, newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-worker, newTag: "build-13"}
 replicas:
 - {name: api, count: 2}
 - {name: frontend, count: 2}
