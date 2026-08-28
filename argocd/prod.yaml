@@ -3,8 +3,9 @@ kind: Application
 metadata: {name: platform-prod, namespace: argocd}
 spec:
   project: default
-  source: {repoURL: https://github.com/YOUR_ORG/cloud-platform-gitops.git, targetRevision: main, path: environments/prod}
+  source: {repoURL: https://github.com/alexcgodwin/cloud-platform-gitops.git, targetRevision: main, path: environments/prod}
   destination: {server: https://kubernetes.default.svc, namespace: platform-prod}
   syncPolicy:
     automated: {enabled: true, prune: true, selfHeal: true}
     syncOptions: [CreateNamespace=true]
+
