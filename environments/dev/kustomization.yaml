@@ -22,8 +22,5 @@ images:
     newTag: "v2"
 
 replicas:
-  - name: api
-    count: 1
-
   - name: frontend
     count: 1
