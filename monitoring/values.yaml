@@ -1,0 +1,87 @@
+# Resource-conscious kube-prometheus-stack configuration
+# Designed for the portfolio EKS cluster.
+
+defaultRules:
+  create: true
+
+grafana:
+  enabled: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+
+  service:
+    type: ClusterIP
+
+
+prometheus:
+  enabled: true
+
+  prometheusSpec:
+    retention: 3d
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+
+alertmanager:
+  enabled: true
+
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+
+
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+
+
+kubeStateMetrics:
+  enabled: true
+
+
+# Disabled initially because one existing EKS node is already at
+# its 17-pod limit. Node Exporter is a DaemonSet and would require
+# one additional pod on every worker node.
+nodeExporter:
+  enabled: false
+
+
+windowsMonitoring:
+  enabled: false
+
+
+# EKS manages these control-plane components, so we do not try
+# to scrape them as if they were self-managed Kubernetes services.
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
