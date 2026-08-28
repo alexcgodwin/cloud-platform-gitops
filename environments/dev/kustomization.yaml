@@ -7,19 +7,19 @@ resources:
 images:
   - name: platform-frontend
     newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-frontend
-    newTag: "v2"
+    newTag: "build-11"
 
   - name: platform-api
     newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-api
-    newTag: "v2"
+    newTag: "build-11"
 
   - name: platform-auth
     newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-auth
-    newTag: "v2"
+    newTag: "build-11"
 
   - name: platform-worker
     newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-worker
-    newTag: "v2"
+    newTag: "build-11"
 
 replicas:
   - name: frontend
