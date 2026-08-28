@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: ConfigMap
-metadata: {name: platform-config, namespace: platform}
+metadata: {name: platform-config}
 data: {REDIS_URL: "redis://redis:6379/0"}

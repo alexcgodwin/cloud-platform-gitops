@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: {name: auth, namespace: platform}
+metadata: {name: auth}
 spec:
   replicas: 2
   strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
@@ -22,5 +22,5 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: {name: auth, namespace: platform}
+metadata: {name: auth}
 spec: {selector: {app: auth}, ports: [{port: 8001, targetPort: 8001}]}

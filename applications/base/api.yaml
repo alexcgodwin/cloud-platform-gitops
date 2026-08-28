@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: {name: api, namespace: platform}
+metadata: {name: api}
 spec:
   strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
   selector: {matchLabels: {app: api}}
@@ -21,5 +21,5 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: {name: api, namespace: platform}
+metadata: {name: api}
 spec: {selector: {app: api}, ports: [{port: 8000, targetPort: 8000}]}

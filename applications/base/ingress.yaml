@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: platform
-  namespace: platform
 spec:
   ingressClassName: nginx
   rules:
@@ -21,7 +20,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: platform-services
-  namespace: platform
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
