@@ -17,6 +17,13 @@ grafana:
 
   service:
     type: ClusterIP
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
 
 
 prometheus:
