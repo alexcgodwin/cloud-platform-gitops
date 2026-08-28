@@ -12,15 +12,15 @@ spec:
       containers:
       - name: frontend
         image: platform-frontend:1
-        ports: [{containerPort: 80}]
+        ports: [{containerPort: 8080}]
         envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
-        startupProbe: {httpGet: {path: /, port: 80}, failureThreshold: 30, periodSeconds: 2}
-        readinessProbe: {httpGet: {path: /, port: 80}, periodSeconds: 5}
-        livenessProbe: {httpGet: {path: /, port: 80}, periodSeconds: 10}
+        startupProbe: {httpGet: {path: /, port: 8080}, failureThreshold: 30, periodSeconds: 2}
+        readinessProbe: {httpGet: {path: /, port: 8080}, periodSeconds: 5}
+        livenessProbe: {httpGet: {path: /, port: 8080}, periodSeconds: 10}
         securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: ["ALL"]}}
         resources: {requests: {cpu: 100m, memory: 96Mi}, limits: {cpu: 500m, memory: 384Mi}}
 ---
 apiVersion: v1
 kind: Service
 metadata: {name: frontend, namespace: platform}
-spec: {selector: {app: frontend}, ports: [{port: 80, targetPort: 80}]}
+spec: {selector: {app: frontend}, ports: [{port: 80, targetPort: 8080}]}

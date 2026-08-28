@@ -1,7 +1,6 @@
 resources:
 - namespace.yaml
 - config.yaml
-- secret.yaml
 - postgres.yaml
 - redis.yaml
 - api.yaml

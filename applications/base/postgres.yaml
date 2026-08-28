@@ -1,19 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: {name: postgres, namespace: platform}
+metadata:
+  name: postgres
+  namespace: platform
 spec:
   replicas: 1
-  selector: {matchLabels: {app: postgres}}
+  selector:
+    matchLabels:
+      app: postgres
   template:
-    metadata: {labels: {app: postgres}}
+    metadata:
+      labels:
+        app: postgres
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
-      - name: postgres
-        image: postgres:16-alpine
-        env: [{name: POSTGRES_DB, value: platform},{name: POSTGRES_USER, value: platform},{name: POSTGRES_PASSWORD, value: platform-change-me}]
-        ports: [{containerPort: 5432}]
+        - name: postgres
+          image: postgres:16-alpine
+          env:
+            - name: POSTGRES_DB
+              value: platform
+            - name: POSTGRES_USER
+              value: platform
+            - name: POSTGRES_PASSWORD
+              value: platform-change-me
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+          securityContext:
+            runAsUser: 70
+            runAsGroup: 70
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
 ---
 apiVersion: v1
 kind: Service
-metadata: {name: postgres, namespace: platform}
-spec: {selector: {app: postgres}, ports: [{port: 5432}]}
+metadata:
+  name: postgres
+  namespace: platform
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -1,11 +1,29 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources: [../../applications/base]
+
+resources:
+  - ../../applications/base
+
 images:
-- {name: platform-frontend, newName: alexcgodwin/platform-frontend, newTag: "1"}
-- {name: platform-api, newName: alexcgodwin/platform-api, newTag: "1"}
-- {name: platform-auth, newName: alexcgodwin/platform-auth, newTag: "1"}
-- {name: platform-worker, newName: alexcgodwin/platform-worker, newTag: "1"}
+  - name: platform-frontend
+    newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-frontend
+    newTag: "v2"
+
+  - name: platform-api
+    newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-api
+    newTag: "v2"
+
+  - name: platform-auth
+    newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-auth
+    newTag: "v2"
+
+  - name: platform-worker
+    newName: 221082176287.dkr.ecr.ca-central-1.amazonaws.com/portfolio-dev/platform-worker
+    newTag: "v2"
+
 replicas:
-- {name: api, count: 1}
-- {name: frontend, count: 1}
+  - name: api
+    count: 1
+
+  - name: frontend
+    count: 1

@@ -1,10 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: {name: platform-dev, namespace: argocd}
+metadata:
+  name: platform-dev
+  namespace: argocd
 spec:
   project: default
-  source: {repoURL: https://github.com/YOUR_ORG/cloud-platform-gitops.git, targetRevision: main, path: environments/dev}
-  destination: {server: https://kubernetes.default.svc, namespace: platform-dev}
+  source:
+    repoURL: https://github.com/alexcgodwin/cloud-platform-gitops.git
+    targetRevision: main
+    path: environments/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform
   syncPolicy:
-    automated: {enabled: true, prune: true, selfHeal: true}
-    syncOptions: [CreateNamespace=true]
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
