@@ -1,0 +1,367 @@
+{
+    "annotations":  {
+                        "list":  [
+                                     {
+                                         "builtIn":  1,
+                                         "datasource":  {
+                                                            "type":  "grafana",
+                                                            "uid":  "-- Grafana --"
+                                                        },
+                                         "enable":  true,
+                                         "hide":  true,
+                                         "iconColor":  "rgba(0, 211, 255, 1)",
+                                         "name":  "Annotations \u0026 Alerts",
+                                         "type":  "dashboard"
+                                     }
+                                 ]
+                    },
+    "editable":  true,
+    "fiscalYearStartMonth":  0,
+    "graphTooltip":  0,
+    "id":  null,
+    "links":  [
+
+              ],
+    "liveNow":  false,
+    "panels":  [
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "palette-classic"
+                                                                      },
+                                                            "unit":  "reqps"
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  0,
+                                       "y":  0
+                                   },
+                       "id":  1,
+                       "options":  {
+                                       "legend":  {
+                                                      "displayMode":  "list",
+                                                      "placement":  "bottom",
+                                                      "showLegend":  true
+                                                  },
+                                       "tooltip":  {
+                                                       "mode":  "multi",
+                                                       "sort":  "none"
+                                                   }
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "sum by (environment) (\n  label_replace(\n    rate(http_requests_total{namespace=\"platform\"}[5m]),\n    \"environment\", \"DEV\", \"namespace\", \"platform\"\n  )\n  or\n  label_replace(\n    rate(http_requests_total{namespace=\"platform-prod\"}[5m]),\n    \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n  )\n  or\n  label_replace(\n    rate(http_requests_total{namespace=\"platform-staging\"}[5m]),\n    \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "API Request Rate by Environment",
+                       "type":  "timeseries"
+                   },
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "thresholds"
+                                                                      },
+                                                            "mappings":  [
+                                                                             {
+                                                                                 "options":  {
+                                                                                                 "0":  {
+                                                                                                           "color":  "red",
+                                                                                                           "text":  "DOWN"
+                                                                                                       },
+                                                                                                 "1":  {
+                                                                                                           "color":  "green",
+                                                                                                           "text":  "UP"
+                                                                                                       }
+                                                                                             },
+                                                                                 "type":  "value"
+                                                                             }
+                                                                         ],
+                                                            "thresholds":  {
+                                                                               "mode":  "absolute",
+                                                                               "steps":  [
+                                                                                             {
+                                                                                                 "color":  "red"
+                                                                                             },
+                                                                                             {
+                                                                                                 "color":  "green",
+                                                                                                 "value":  1
+                                                                                             }
+                                                                                         ]
+                                                                           }
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  12,
+                                       "y":  0
+                                   },
+                       "id":  2,
+                       "options":  {
+                                       "colorMode":  "value",
+                                       "graphMode":  "none",
+                                       "justifyMode":  "auto",
+                                       "orientation":  "auto",
+                                       "reduceOptions":  {
+                                                             "calcs":  [
+                                                                           "lastNotNull"
+                                                                       ],
+                                                             "fields":  "",
+                                                             "values":  false
+                                                         },
+                                       "textMode":  "auto",
+                                       "wideLayout":  true
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "min by (environment) (\n  label_replace(\n    up{namespace=\"platform\", service=\"api\"},\n    \"environment\", \"DEV\", \"namespace\", \"platform\"\n  )\n  or\n  label_replace(\n    up{namespace=\"platform-prod\", service=\"api\"},\n    \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n  )\n  or\n  label_replace(\n    up{namespace=\"platform-staging\", service=\"api\"},\n    \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "API Availability",
+                       "type":  "stat"
+                   },
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "palette-classic"
+                                                                      },
+                                                            "unit":  "s"
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  0,
+                                       "y":  8
+                                   },
+                       "id":  3,
+                       "options":  {
+                                       "legend":  {
+                                                      "displayMode":  "list",
+                                                      "placement":  "bottom",
+                                                      "showLegend":  true
+                                                  },
+                                       "tooltip":  {
+                                                       "mode":  "multi",
+                                                       "sort":  "none"
+                                                   }
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "histogram_quantile(\n  0.95,\n  sum by (le, environment) (\n    label_replace(\n      rate(http_request_duration_seconds_bucket{namespace=\"platform\", service=\"api\"}[5m]),\n      \"environment\", \"DEV\", \"namespace\", \"platform\"\n    )\n    or\n    label_replace(\n      rate(http_request_duration_seconds_bucket{namespace=\"platform-prod\", service=\"api\"}[5m]),\n      \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n    )\n    or\n    label_replace(\n      rate(http_request_duration_seconds_bucket{namespace=\"platform-staging\", service=\"api\"}[5m]),\n      \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n    )\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "P95 API Response Time",
+                       "type":  "timeseries"
+                   },
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "palette-classic"
+                                                                      },
+                                                            "min":  0,
+                                                            "unit":  "reqps"
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  12,
+                                       "y":  8
+                                   },
+                       "id":  4,
+                       "options":  {
+                                       "legend":  {
+                                                      "displayMode":  "list",
+                                                      "placement":  "bottom",
+                                                      "showLegend":  true
+                                                  },
+                                       "tooltip":  {
+                                                       "mode":  "multi",
+                                                       "sort":  "none"
+                                                   }
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "sum by (environment) (\n  label_replace(\n    rate(http_requests_total{namespace=\"platform\", status=\"5xx\"}[5m]),\n    \"environment\", \"DEV\", \"namespace\", \"platform\"\n  )\n  or\n  label_replace(\n    rate(http_requests_total{namespace=\"platform-prod\", status=\"5xx\"}[5m]),\n    \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n  )\n  or\n  label_replace(\n    rate(http_requests_total{namespace=\"platform-staging\", status=\"5xx\"}[5m]),\n    \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n  )\n)\nor\n(\n  0 *\n  max by (environment) (\n    label_replace(\n      up{namespace=\"platform\", service=\"api\"},\n      \"environment\", \"DEV\", \"namespace\", \"platform\"\n    )\n    or\n    label_replace(\n      up{namespace=\"platform-prod\", service=\"api\"},\n      \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n    )\n    or\n    label_replace(\n      up{namespace=\"platform-staging\", service=\"api\"},\n      \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n    )\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "API 5xx Error Rate",
+                       "type":  "timeseries"
+                   },
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "palette-classic"
+                                                                      }
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  0,
+                                       "y":  16
+                                   },
+                       "id":  5,
+                       "options":  {
+                                       "colorMode":  "value",
+                                       "graphMode":  "area",
+                                       "justifyMode":  "auto",
+                                       "orientation":  "auto",
+                                       "reduceOptions":  {
+                                                             "calcs":  [
+                                                                           "lastNotNull"
+                                                                       ],
+                                                             "fields":  "",
+                                                             "values":  false
+                                                         },
+                                       "textMode":  "auto",
+                                       "wideLayout":  true
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "sum by (environment) (\n  label_replace(\n    http_requests_total{namespace=\"platform\"},\n    \"environment\", \"DEV\", \"namespace\", \"platform\"\n  )\n  or\n  label_replace(\n    http_requests_total{namespace=\"platform-prod\"},\n    \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n  )\n  or\n  label_replace(\n    http_requests_total{namespace=\"platform-staging\"},\n    \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "Total API Requests",
+                       "type":  "stat"
+                   },
+                   {
+                       "datasource":  {
+                                          "type":  "prometheus",
+                                          "uid":  "prometheus"
+                                      },
+                       "fieldConfig":  {
+                                           "defaults":  {
+                                                            "color":  {
+                                                                          "mode":  "palette-classic"
+                                                                      },
+                                                            "min":  0
+                                                        },
+                                           "overrides":  [
+
+                                                         ]
+                                       },
+                       "gridPos":  {
+                                       "h":  8,
+                                       "w":  12,
+                                       "x":  12,
+                                       "y":  16
+                                   },
+                       "id":  6,
+                       "options":  {
+                                       "colorMode":  "value",
+                                       "graphMode":  "area",
+                                       "justifyMode":  "auto",
+                                       "orientation":  "auto",
+                                       "reduceOptions":  {
+                                                             "calcs":  [
+                                                                           "lastNotNull"
+                                                                       ],
+                                                             "fields":  "",
+                                                             "values":  false
+                                                         },
+                                       "textMode":  "auto",
+                                       "wideLayout":  true
+                                   },
+                       "targets":  [
+                                       {
+                                           "editorMode":  "code",
+                                           "expr":  "sum by (environment) (\n  label_replace(\n    kube_pod_status_phase{namespace=\"platform\", pod=~\"api-.*\", phase=\"Running\"} == 1,\n    \"environment\", \"DEV\", \"namespace\", \"platform\"\n  )\n  or\n  label_replace(\n    kube_pod_status_phase{namespace=\"platform-prod\", pod=~\"api-.*\", phase=\"Running\"} == 1,\n    \"environment\", \"PRODUCTION\", \"namespace\", \"platform-prod\"\n  )\n  or\n  label_replace(\n    kube_pod_status_phase{namespace=\"platform-staging\", pod=~\"api-.*\", phase=\"Running\"} == 1,\n    \"environment\", \"STAGING\", \"namespace\", \"platform-staging\"\n  )\n)",
+                                           "legendFormat":  "{{environment}}",
+                                           "range":  true,
+                                           "refId":  "A"
+                                       }
+                                   ],
+                       "title":  "API Pods Running",
+                       "type":  "stat"
+                   }
+               ],
+    "refresh":  "30s",
+    "schemaVersion":  42,
+    "tags":  [
+                 "portfolio",
+                 "api",
+                 "prometheus",
+                 "observability"
+             ],
+    "templating":  {
+                       "list":  [
+
+                                ]
+                   },
+    "time":  {
+                 "from":  "now-6h",
+                 "to":  "now"
+             },
+    "timepicker":  {
+
+                   },
+    "timezone":  "browser",
+    "title":  "Cloud Platform API Observability",
+    "uid":  "cloud-platform-api-observability",
+    "version":  1,
+    "weekStart":  ""
+}
