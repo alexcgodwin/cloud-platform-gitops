@@ -3,6 +3,8 @@ kind: Kustomization
 namespace: platform
 resources:
   - namespace.yaml
+  - storageclass-gp3-retain.yaml
+  - postgres-pvc.yaml
   - ../../applications/base
 
 images:
