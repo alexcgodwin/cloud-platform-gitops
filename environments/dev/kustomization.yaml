@@ -27,3 +27,8 @@ images:
 replicas:
   - name: frontend
     count: 1
+patches:
+  - path: postgres-persistence-patch.yaml
+    target:
+      kind: Deployment
+      name: postgres
