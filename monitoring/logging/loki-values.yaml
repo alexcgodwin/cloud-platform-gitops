@@ -90,3 +90,6 @@ resultsCache:
 
 minio:
   enabled: false
+
+lokiCanary:
+  enabled: false
