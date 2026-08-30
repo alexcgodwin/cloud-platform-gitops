@@ -3,7 +3,7 @@ kind: Deployment
 metadata: {name: auth}
 spec:
   replicas: 2
-  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 1, maxSurge: 0}}
   selector: {matchLabels: {app: auth}}
   template:
     metadata: {labels: {app: auth}}
@@ -13,7 +13,15 @@ spec:
       - name: auth
         image: platform-auth:1
         ports: [{containerPort: 8001}]
-        envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
+        envFrom:
+          - configMapRef:
+              name: platform-config
+        env:
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: platform-secrets
+                key: JWT_SECRET
         startupProbe: {httpGet: {path: /health, port: 8001}, failureThreshold: 30, periodSeconds: 2}
         readinessProbe: {httpGet: {path: /health, port: 8001}, periodSeconds: 5}
         livenessProbe: {httpGet: {path: /health, port: 8001}, periodSeconds: 10}

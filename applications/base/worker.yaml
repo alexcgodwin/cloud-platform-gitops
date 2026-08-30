@@ -3,6 +3,7 @@ kind: Deployment
 metadata: {name: worker}
 spec:
   replicas: 2
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 1, maxSurge: 0}}
   selector: {matchLabels: {app: worker}}
   template:
     metadata: {labels: {app: worker}}
@@ -11,6 +12,8 @@ spec:
       containers:
       - name: worker
         image: platform-worker:1
-        envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
+        envFrom:
+          - configMapRef:
+              name: platform-config
         securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: ["ALL"]}}
         resources: {requests: {cpu: 100m, memory: 64Mi}, limits: {cpu: 500m, memory: 256Mi}}
