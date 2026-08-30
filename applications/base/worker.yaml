@@ -3,6 +3,7 @@ kind: Deployment
 metadata: {name: worker}
 spec:
   replicas: 2
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 1, maxSurge: 0}}
   selector: {matchLabels: {app: worker}}
   template:
     metadata: {labels: {app: worker}}
