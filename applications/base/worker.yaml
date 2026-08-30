@@ -11,6 +11,8 @@ spec:
       containers:
       - name: worker
         image: platform-worker:1
-        envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
+        envFrom:
+          - configMapRef:
+              name: platform-config
         securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: ["ALL"]}}
         resources: {requests: {cpu: 100m, memory: 64Mi}, limits: {cpu: 500m, memory: 256Mi}}

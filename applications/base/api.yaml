@@ -12,7 +12,15 @@ spec:
       - name: api
         image: platform-api:1
         ports: [{containerPort: 8000}]
-        envFrom: [{configMapRef: {name: platform-config}},{secretRef: {name: platform-secrets}}]
+        envFrom:
+          - configMapRef:
+              name: platform-config
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: platform-secrets
+                key: DATABASE_URL
         startupProbe: {httpGet: {path: /health, port: 8000}, failureThreshold: 30, periodSeconds: 2}
         readinessProbe: {httpGet: {path: /ready, port: 8000}, periodSeconds: 5}
         livenessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 10}
