@@ -25,7 +25,10 @@ spec:
             - name: POSTGRES_USER
               value: platform
             - name: POSTGRES_PASSWORD
-              value: platform-change-me
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
           readinessProbe:
