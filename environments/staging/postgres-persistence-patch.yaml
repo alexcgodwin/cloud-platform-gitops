@@ -1,0 +1,40 @@
+- op: add
+  path: /spec/strategy
+  value:
+    type: Recreate
+
+- op: replace
+  path: /spec/template/spec/containers/0/env/2
+  value:
+    name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: platform-secrets
+        key: POSTGRES_PASSWORD
+
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: PGDATA
+    value: /var/lib/postgresql/data/pgdata
+
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts
+  value:
+    - name: postgres-data
+      mountPath: /var/lib/postgresql/data
+
+- op: add
+  path: /spec/template/spec/volumes
+  value:
+    - name: postgres-data
+      persistentVolumeClaim:
+        claimName: postgres-data
+
+- op: add
+  path: /spec/template/spec/securityContext/fsGroup
+  value: 70
+
+- op: add
+  path: /spec/template/spec/securityContext/fsGroupChangePolicy
+  value: OnRootMismatch
