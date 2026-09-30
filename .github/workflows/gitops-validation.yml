@@ -1,0 +1,49 @@
+name: GitOps Contract Validation
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify environment contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f environments/dev/kustomization.yaml
+          test -f environments/staging/kustomization.yaml
+          test -f environments/prod/kustomization.yaml
+          test -f argocd/dev.yaml
+          test -f argocd/staging.yaml
+          test -f argocd/prod.yaml
+
+      - name: Verify workload guardrails
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "kind: NetworkPolicy" applications/base/networkpolicy.yaml
+          grep -q "kind: HorizontalPodAutoscaler" applications/base/hpa.yaml
+          grep -q "kind: PodDisruptionBudget" applications/base/pdb.yaml
+          grep -R -q "runAsNonRoot" applications/base
+          grep -R -q "allowPrivilegeEscalation: false" applications/base
+
+      - name: Verify observability and failure evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f applications/base/servicemonitor-api.yaml
+          test -f monitoring/dashboards/cloud-platform-api-observability.json
+          test -f monitoring/logging/loki-values.yaml
+          test -f monitoring/logging/alloy-values.yaml
+          test -f runbooks/failure-tests.md
+          test -f docs/adr/0001-gitops-reconciliation-as-deployment-control.md
